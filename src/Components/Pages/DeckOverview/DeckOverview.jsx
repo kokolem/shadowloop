@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import { Container } from '@material-ui/core';
 import Deck from './Deck';
 import LoadingDeck from './LoadingDeck';
 
@@ -28,7 +29,7 @@ export default function DeckOverview() {
   }, []);
 
   return (
-    <>
+    <Container>
       {isLoading ? (
         <>
           {[...Array(4).keys()].map((key) => (
@@ -42,6 +43,6 @@ export default function DeckOverview() {
           <Deck name={name} />
         </div>
       ))}
-    </>
+    </Container>
   );
 }

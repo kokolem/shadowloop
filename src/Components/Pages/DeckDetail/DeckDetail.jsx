@@ -9,8 +9,14 @@ import Controls from './Controls';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: 'calc(100vh - 64px)',
-    paddingBottom: theme.spacing(2),
+    '@media (min-width:0px) and (orientation: landscape)': {
+      minHeight: 'calc(100vh - 48px)',
+    },
+    '@media (min-width:600px)': {
+      minHeight: 'calc(100vh - 64px)',
+    },
+    minHeight: 'calc(100vh - 56px)',
+    paddingTop: theme.spacing(2),
   },
 }));
 
@@ -23,6 +29,8 @@ export default function DeckDetail() {
   const [onSlide, setOnSlide] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [czechLabelShown, setCzechLabelShown] = useState(true);
+  const [englishLabelShown, setEnglishLabelShown] = useState(true);
 
   useEffect(() => {
     readRemoteFile(`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${deckName}.csv`, {
@@ -64,6 +72,8 @@ export default function DeckDetail() {
             deckName={deckName}
             onSlideFinished={nextSlide}
             isSlidePlaying={isPlaying}
+            czechLabelShown={czechLabelShown}
+            englishLabelShown={englishLabelShown}
           />
         )}
       </Box>
@@ -72,8 +82,12 @@ export default function DeckDetail() {
         isPlaying={isPlaying}
         onResumePauseClick={() => setIsPlaying(!isPlaying)}
         onSlide={onSlide}
-        maxSLide={deckContent.length}
+        maxSlide={deckContent.length}
         onSlideChange={(_, slide) => setOnSlide(slide)}
+        czechLabelShown={czechLabelShown}
+        setCzechLabelShown={setCzechLabelShown}
+        englishLabelShown={englishLabelShown}
+        setEnglishLabelShown={setEnglishLabelShown}
       />
       )}
     </Box>

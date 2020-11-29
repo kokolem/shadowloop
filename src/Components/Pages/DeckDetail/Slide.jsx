@@ -7,10 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { Box } from '@material-ui/core';
 import ReactPlayer from 'react-player';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: theme.spacing(2),
-  },
+const useStyles = makeStyles(() => ({
   container: {
     // width: '100%',
   },
@@ -23,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Slide({
-  slideContent, deckName, onSlideFinished, isSlidePlaying,
+  slideContent, deckName, onSlideFinished, isSlidePlaying, czechLabelShown, englishLabelShown,
 }) {
   const classes = useStyles();
 
@@ -52,55 +49,56 @@ export default function Slide({
   }, [isSlidePlaying, isSlideFinished, onSlideFinished]);
 
   return (
-    <div className={classes.root}>
-      <Box
-        className={classes.container}
-        display="flex"
-      >
-        <Box m="auto">
-          <Card className={classes.card}>
-            <img
-              className={classes.media}
-              src={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${image}`}
-              alt={englishText}
-            />
+    <Box className={classes.container} display="flex">
+      <Box m="auto">
+        <Card className={classes.card}>
+          <img
+            className={classes.media}
+            src={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${image}`}
+            alt={englishText}
+          />
+          { (englishLabelShown || czechLabelShown) && (
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
-                {englishText}
+                {englishLabelShown ? englishText : czechText}
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {czechText}
-              </Typography>
-              <ReactPlayer
-                url={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${audio}`}
-                playing={isAudioPlaying}
-                width={0}
-                height={0}
-                onEnded={() => {
-                  setTimesPlayed(timesPlayed + 1);
-                  if (timesPlayed < 2) {
-                    setIsAudioPaused(true);
-                    new Promise((r) => setTimeout(r, timeout)).then(
-                      () => setIsAudioPaused(false),
-                    );
-                  } else {
-                    new Promise((r) => setTimeout(r, timeout)).then(
-                      () => setIsSlideFinished(true),
-                    );
-                  }
-                }}
-              />
+              { (englishLabelShown && czechLabelShown) && (
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {czechText}
+                </Typography>
+              )}
             </CardContent>
-          </Card>
-        </Box>
+          )}
+          <ReactPlayer
+            url={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${audio}`}
+            playing={isAudioPlaying}
+            width={0}
+            height={0}
+            onEnded={() => {
+              setTimesPlayed(timesPlayed + 1);
+              if (timesPlayed < 2) {
+                setIsAudioPaused(true);
+                new Promise((r) => setTimeout(r, timeout)).then(
+                  () => setIsAudioPaused(false),
+                );
+              } else {
+                new Promise((r) => setTimeout(r, timeout)).then(
+                  () => setIsSlideFinished(true),
+                );
+              }
+            }}
+          />
+        </Card>
       </Box>
-    </div>
+    </Box>
   );
 }
 
 Slide.propTypes = {
+  czechLabelShown: PropTypes.bool.isRequired,
   deckName: PropTypes.string.isRequired,
-  onSlideFinished: PropTypes.func.isRequired,
+  englishLabelShown: PropTypes.bool.isRequired,
   isSlidePlaying: PropTypes.bool.isRequired,
+  onSlideFinished: PropTypes.func.isRequired,
   slideContent: PropTypes.arrayOf(string).isRequired,
 };
