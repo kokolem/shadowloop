@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.js": "/shadowloop/static/js/main.cf581529.chunk.js",
+    "main.js.map": "/shadowloop/static/js/main.cf581529.chunk.js.map",
+    "runtime-main.js": "/shadowloop/static/js/runtime-main.f85c26b5.js",
+    "runtime-main.js.map": "/shadowloop/static/js/runtime-main.f85c26b5.js.map",
+    "static/js/2.ae649634.chunk.js": "/shadowloop/static/js/2.ae649634.chunk.js",
+    "static/js/2.ae649634.chunk.js.map": "/shadowloop/static/js/2.ae649634.chunk.js.map",
+    "index.html": "/shadowloop/index.html",
+    "static/js/2.ae649634.chunk.js.LICENSE.txt": "/shadowloop/static/js/2.ae649634.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f85c26b5.js",
+    "static/js/2.ae649634.chunk.js",
+    "static/js/main.cf581529.chunk.js"
+  ]
+}
