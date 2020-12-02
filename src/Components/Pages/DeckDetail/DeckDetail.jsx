@@ -7,7 +7,7 @@ import Slide from './Slide';
 import LoadingSlide from './LoadingSlide';
 import Controls from './Controls';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     '@media (min-width:0px) and (orientation: landscape)': {
       minHeight: 'calc(100vh - 48px)',
@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
       minHeight: 'calc(100vh - 64px)',
     },
     minHeight: 'calc(100vh - 56px)',
-    paddingTop: theme.spacing(2),
   },
 }));
 
@@ -31,6 +30,7 @@ export default function DeckDetail() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [czechLabelShown, setCzechLabelShown] = useState(true);
   const [englishLabelShown, setEnglishLabelShown] = useState(true);
+  const [pauseDurationMultiplier, setPauseDurationMultiplier] = useState(1.5);
 
   useEffect(() => {
     readRemoteFile(`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${deckName}.csv`, {
@@ -44,9 +44,10 @@ export default function DeckDetail() {
 
   useEffect(() => {
     if (!isLoading) {
-      // preload next image
+      // preload next image and audio
       if (onSlide + 1 < deckContent.length) {
-        new Image().src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${deckContent[onSlide + 1][3]}`;
+        (new Image()).src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${deckContent[onSlide + 1][3]}`;
+        (new Audio()).src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${deckContent[onSlide + 1][2]}`;
       }
     }
   }, [deckContent, deckName, isLoading, onSlide]);
@@ -74,6 +75,7 @@ export default function DeckDetail() {
             isSlidePlaying={isPlaying}
             czechLabelShown={czechLabelShown}
             englishLabelShown={englishLabelShown}
+            pauseDurationMultiplier={pauseDurationMultiplier}
           />
         )}
       </Box>
@@ -88,6 +90,8 @@ export default function DeckDetail() {
         setCzechLabelShown={setCzechLabelShown}
         englishLabelShown={englishLabelShown}
         setEnglishLabelShown={setEnglishLabelShown}
+        pauseDurationMultiplier={pauseDurationMultiplier}
+        setPauseDurationMultiplier={setPauseDurationMultiplier}
       />
       )}
     </Box>

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
-  Box, Paper, IconButton, Slider, Container,
+  Box, Paper, IconButton, Slider, Container, FormControl, InputLabel, Select, MenuItem,
 } from '@material-ui/core';
 import { Pause as PauseIcon, PlayArrow as PlayArrowIcon } from '@material-ui/icons';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -28,6 +28,7 @@ export default function Controls({
   // eslint-disable-next-line no-unused-vars
   isPlaying, onResumePauseClick, onSlide, maxSlide, onSlideChange,
   czechLabelShown, setCzechLabelShown, englishLabelShown, setEnglishLabelShown,
+  pauseDurationMultiplier, setPauseDurationMultiplier,
 }) {
   const classes = useStyles();
 
@@ -57,16 +58,6 @@ export default function Controls({
             <FormControlLabel
               control={(
                 <Switch
-                  checked={czechLabelShown}
-                  onChange={(e) => setCzechLabelShown(e.target.checked)}
-                  color="primary"
-                />
-              )}
-              label="Česky"
-            />
-            <FormControlLabel
-              control={(
-                <Switch
                   checked={englishLabelShown}
                   onChange={(e) => setEnglishLabelShown(e.target.checked)}
                   color="primary"
@@ -74,6 +65,29 @@ export default function Controls({
               )}
               label="Anglicky"
             />
+            <FormControlLabel
+              control={(
+                <Switch
+                  checked={czechLabelShown}
+                  onChange={(e) => setCzechLabelShown(e.target.checked)}
+                  color="primary"
+                />
+              )}
+              label="Česky"
+            />
+            <FormControl variant="outlined">
+              <InputLabel id="pause-label">Pauza</InputLabel>
+              <Select
+                labelId="pause-label"
+                label="Pauza"
+                value={pauseDurationMultiplier}
+                onChange={(e) => setPauseDurationMultiplier(e.target.value)}
+              >
+                <MenuItem value={1}>1×</MenuItem>
+                <MenuItem value={1.5}>1,5×</MenuItem>
+                <MenuItem value={2}>2×</MenuItem>
+              </Select>
+            </FormControl>
           </FormGroup>
         </Box>
       </Container>
@@ -89,6 +103,8 @@ Controls.propTypes = {
   onResumePauseClick: PropTypes.func.isRequired,
   onSlide: PropTypes.number.isRequired,
   onSlideChange: PropTypes.func.isRequired,
+  pauseDurationMultiplier: PropTypes.number.isRequired,
   setCzechLabelShown: PropTypes.func.isRequired,
   setEnglishLabelShown: PropTypes.func.isRequired,
+  setPauseDurationMultiplier: PropTypes.func.isRequired,
 };

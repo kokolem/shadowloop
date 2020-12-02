@@ -8,14 +8,7 @@ import { Skeleton } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingTop: theme.spacing(2),
-  },
-  container: {
-    // minWidth: '100%',
-  },
-  card: {
-    // width: '300px',
-    // maxWidth: '100%',
+    padding: theme.spacing(2),
   },
   media: {
     maxWidth: '100%',
@@ -28,13 +21,12 @@ export default function Slide() {
   return (
     <div className={classes.root}>
       <Box
-        className={classes.container}
         display="flex"
       >
         <Box m="auto">
-          <Card className={classes.card}>
+          <Card>
             <Skeleton variant="rect">
-              <div style={{ paddingTop: '57%', width: '300px' }} />
+              <div style={{ paddingTop: '57%', width: '400px' }} />
             </Skeleton>
             <CardContent>
               <Skeleton>
