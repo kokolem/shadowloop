@@ -2,6 +2,7 @@
   "name": "shadowloop",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://kokolem.github.io/shadowloop",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
@@ -19,7 +20,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +51,7 @@
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsx-a11y": "^6.3.0",
     "eslint-plugin-react": "^7.20.0",
-    "eslint-plugin-react-hooks": "^4.0.0"
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "gh-pages": "^3.1.0"
   }
 }
