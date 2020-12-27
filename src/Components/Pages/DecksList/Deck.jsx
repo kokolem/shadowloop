@@ -23,10 +23,10 @@ export default function Deck({ name }) {
       <CardActionArea component={Link} to={`decks/${name}`}>
         <CardContent>
           <Typography variant="overline" color="textSecondary">
-            Základní balíček
+            {name.split('_')[0]}
           </Typography>
           <Typography variant="h5" component="h2">
-            {name}
+            {name.split('_')[1]}
           </Typography>
         </CardContent>
         <CardActions>
