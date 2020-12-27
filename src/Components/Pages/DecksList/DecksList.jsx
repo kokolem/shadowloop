@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DeckOverview() {
+export default function DecksList() {
   const classes = useStyles();
 
   const [decks, setDecks] = useState([]);

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -5,7 +6,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { Skeleton } from '@material-ui/lab';
+import { Link } from 'react-router-dom';
+import { CardActionArea } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -13,35 +15,30 @@ const useStyles = makeStyles({
   },
 });
 
-export default function LoadingDeck() {
+export default function Deck({ name }) {
   const classes = useStyles();
 
   return (
     <Card className={classes.root} variant="outlined">
-      <CardContent>
-        <Skeleton>
+      <CardActionArea component={Link} to={`decks/${name}`}>
+        <CardContent>
           <Typography variant="overline" color="textSecondary">
             Základní balíček
           </Typography>
-        </Skeleton>
-        <Skeleton>
           <Typography variant="h5" component="h2">
-            {[...Array(Math.floor(Math.random() * 11) + 10)].map(() => ('a')).join('')}
+            {name}
           </Typography>
-        </Skeleton>
-      </CardContent>
-      <CardActions>
-        <Skeleton>
+        </CardContent>
+        <CardActions>
           <Button size="small" color="secondary">
             Spustit od začátku
           </Button>
-        </Skeleton>
-        <Skeleton>
-          <Button size="small" color="secondary" disabled>
-            Pokračovat
-          </Button>
-        </Skeleton>
-      </CardActions>
+        </CardActions>
+      </CardActionArea>
     </Card>
   );
 }
+
+Deck.propTypes = {
+  name: PropTypes.string.isRequired,
+};
