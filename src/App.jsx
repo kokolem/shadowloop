@@ -6,7 +6,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import Layout from './Components/Layout';
-import DeckOverview from './Components/Pages/DeckOverview';
+import DecksList from './Components/Pages/DecksList';
 import Error404 from './Components/Pages/Error404';
 import DeckDetail from './Components/Pages/DeckDetail';
 
@@ -16,7 +16,7 @@ function App() {
       <Layout>
         <Switch>
           <Route exact path="/">
-            <DeckOverview />
+            <DecksList />
           </Route>
           <Route exact path="/decks">
             <Redirect to="/" />
