@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Controls({
-  // eslint-disable-next-line no-unused-vars
   isPlaying, onResumePauseClick, onSlide, maxSlide, onSlideChange,
   czechLabelShown, setCzechLabelShown, englishLabelShown, setEnglishLabelShown,
   pauseDurationMultiplier, setPauseDurationMultiplier,
