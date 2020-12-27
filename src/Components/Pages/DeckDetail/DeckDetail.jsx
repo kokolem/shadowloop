@@ -36,8 +36,12 @@ export default function DeckDetail() {
     readRemoteFile(`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${deckName}.csv`, {
       download: true,
       complete: (results) => {
-        setDeckContent(results.data.slice(0, -1));
-        setIsLoading(false);
+        const newDeckContent = results.data.slice(0, -1);
+        setDeckContent(newDeckContent);
+
+        const firstImage = new Image();
+        firstImage.src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${newDeckContent[1][3]}`;
+        firstImage.onload = () => setIsLoading(false);
       },
     });
   }, [deckName]);
