@@ -8,6 +8,9 @@ const useStyles = makeStyles((theme) => ({
   deckPadding: {
     paddingTop: theme.spacing(2),
   },
+  deckListPadding: {
+    paddingBottom: theme.spacing(2),
+  },
 }));
 
 export default function DecksList() {
@@ -29,7 +32,7 @@ export default function DecksList() {
   }, []);
 
   return (
-    <Container>
+    <Container className={classes.deckListPadding}>
       {isLoading ? (
         <>
           {[...Array(4).keys()].map((key) => (
