@@ -31,7 +31,7 @@ export default function Deck({ name }) {
         </CardContent>
         <CardActions>
           <Button size="small" color="secondary">
-            Spustit od začátku
+            Spustit
           </Button>
         </CardActions>
       </CardActionArea>
