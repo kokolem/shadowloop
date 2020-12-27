@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import { CardActionArea } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -19,22 +20,21 @@ export default function Deck({ name }) {
 
   return (
     <Card className={classes.root} variant="outlined">
-      <CardContent>
-        <Typography variant="overline" color="textSecondary">
-          Základní balíček
-        </Typography>
-        <Typography variant="h5" component="h2">
-          { name }
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small" color="secondary" component={Link} to={`decks/${name}`}>
-          Spustit od začátku
-        </Button>
-        <Button size="small" color="secondary" disabled>
-          Pokračovat
-        </Button>
-      </CardActions>
+      <CardActionArea component={Link} to={`decks/${name}`}>
+        <CardContent>
+          <Typography variant="overline" color="textSecondary">
+            Základní balíček
+          </Typography>
+          <Typography variant="h5" component="h2">
+            {name}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small" color="secondary" component={Link} to={`decks/${name}`}>
+            Spustit od začátku
+          </Button>
+        </CardActions>
+      </CardActionArea>
     </Card>
   );
 }
