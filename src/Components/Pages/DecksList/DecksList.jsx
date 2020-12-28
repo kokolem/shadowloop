@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Container } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 import { useLocation } from 'react-router-dom';
 import qs from 'qs';
 import { useLocalStorage } from '@rehooks/local-storage';
@@ -14,12 +14,17 @@ const useStyles = makeStyles((theme) => ({
   deckListPadding: {
     paddingBottom: theme.spacing(2),
   },
+  archivedDecksHeading: {
+    paddingTop: theme.spacing(2),
+  },
 }));
 
 export default function DecksList() {
   const classes = useStyles();
 
-  const [decks, setDecks] = useState({});
+  const [allDecks, setAllDecks] = useState({});
+  const [activeDecks, setActiveDecks] = useState({});
+  const [archivedDecks, setArchivedDecks] = useLocalStorage('archivedDecks', {});
   const [hiddenDecks, setHiddenDecks] = useLocalStorage('hiddenDecks', {});
 
   const location = useLocation();
@@ -38,7 +43,7 @@ export default function DecksList() {
   }, [hiddenDecks, location, setHiddenDecks]);
 
   useEffect(() => {
-    setDecks((oldDecks) => ({ ...oldDecks, ...hiddenDecks }));
+    setAllDecks((oldDecks) => ({ ...oldDecks, ...hiddenDecks }));
   }, [hiddenDecks]);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -54,11 +59,28 @@ export default function DecksList() {
           return [deckString, newDeckValues];
         });
 
-        setDecks((oldDecks) => ({ ...oldDecks, ...Object.fromEntries(fetchedDecks) }));
+        setAllDecks((oldDecks) => ({ ...oldDecks, ...Object.fromEntries(fetchedDecks) }));
         setIsLoading(false);
       },
       (error) => { console.log(error); });
   }, []);
+
+  function archiveDeck(urlToArchive) {
+    setActiveDecks(Object.fromEntries(Object.entries(activeDecks)
+      .filter(([url]) => url !== urlToArchive)));
+    setArchivedDecks({ ...archivedDecks, ...{ [urlToArchive]: allDecks[urlToArchive] } });
+  }
+
+  function unarchiveDeck(urlToUnarchive) {
+    setArchivedDecks(Object.fromEntries(Object.entries(archivedDecks)
+      .filter(([url]) => url !== urlToUnarchive)));
+    setActiveDecks({ ...activeDecks, ...{ [urlToUnarchive]: allDecks[urlToUnarchive] } });
+  }
+
+  useEffect(() => {
+    setActiveDecks(Object.fromEntries(Object.entries(allDecks)
+      .filter(([url]) => !(url in archivedDecks))));
+  }, [allDecks, archivedDecks]);
 
   return (
     <Container className={classes.deckListPadding}>
@@ -70,11 +92,41 @@ export default function DecksList() {
             </div>
           ))}
         </>
-      ) : Object.entries(decks).sort().map(([url, { category, name }]) => (
-        <div className={classes.deckPadding} key={url}>
-          <Deck category={category} name={name} url={url} />
-        </div>
-      ))}
+      ) : (
+        <>
+          {Object.entries(activeDecks).sort().map(([url, { category, name }]) => (
+            <div className={classes.deckPadding} key={url}>
+              <Deck
+                category={category}
+                name={name}
+                url={url}
+                isArchived={false}
+                onArchive={() => archiveDeck(url)}
+              />
+            </div>
+          ))}
+          {Object.entries(archivedDecks).length !== 0 && (
+          <Typography
+            variant="h5"
+            component="h2"
+            className={classes.archivedDecksHeading}
+          >
+            Archivované balíčky
+          </Typography>
+          )}
+          {Object.entries(archivedDecks).sort().map(([url, { category, name }]) => (
+            <div className={classes.deckPadding} key={url}>
+              <Deck
+                category={category}
+                name={name}
+                url={url}
+                isArchived
+                onArchive={() => unarchiveDeck(url)}
+              />
+            </div>
+          ))}
+        </>
+      )}
     </Container>
   );
 }

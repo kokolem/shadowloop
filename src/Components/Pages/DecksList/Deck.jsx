@@ -15,7 +15,9 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Deck({ category, name, url }) {
+export default function Deck({
+  category, name, url, isArchived, onArchive,
+}) {
   const classes = useStyles();
 
   return (
@@ -29,18 +31,23 @@ export default function Deck({ category, name, url }) {
             {name}
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small" color="secondary">
-            Spustit
-          </Button>
-        </CardActions>
       </CardActionArea>
+      <CardActions>
+        <Button size="small" color="secondary" component={Link} to={`decks/${url}`}>
+          Spustit
+        </Button>
+        <Button size="small" color="secondary" onClick={onArchive}>
+          {isArchived ? 'Vyjmout z archivu' : 'Archivovat'}
+        </Button>
+      </CardActions>
     </Card>
   );
 }
 
 Deck.propTypes = {
   category: PropTypes.string.isRequired,
+  isArchived: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
+  onArchive: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
 };
