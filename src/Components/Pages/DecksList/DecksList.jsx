@@ -34,7 +34,7 @@ export default function DecksList() {
     [newHiddenDeck.category, newHiddenDeck.name, newHiddenDeck.password] = hiddenDeckSplit;
 
     const hiddenDeckUrl = hiddenDeckSplit.slice(0, 2).join('_');
-    setHiddenDecks({ ...{}, [hiddenDeckUrl]: newHiddenDeck });
+    setHiddenDecks({ ...hiddenDecks, [hiddenDeckUrl]: newHiddenDeck });
   }, [hiddenDecks, location, setHiddenDecks]);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function DecksList() {
             </div>
           ))}
         </>
-      ) : Object.entries(decks).map(([url, { category, name }]) => (
+      ) : Object.entries(decks).sort().map(([url, { category, name }]) => (
         <div className={classes.deckPadding} key={url}>
           <Deck category={category} name={name} url={url} />
         </div>
