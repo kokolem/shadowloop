@@ -4,15 +4,17 @@
   "private": true,
   "homepage": "https://kokolem.github.io/shadowloop",
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@rehooks/local-storage": "^2.4.0",
     "prop-types": "^15.7.2",
+    "qs": "^6.9.4",
     "react": "^17.0.1",
     "react-app-polyfill": "^2.0.0",
     "react-dom": "^17.0.1",
-    "react-papaparse": "^3.9.0",
-    "react-player": "^2.6.2",
+    "react-papaparse": "^3.11.1",
+    "react-player": "^2.7.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0"
   },
@@ -47,7 +49,7 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsx-a11y": "^6.3.0",
     "eslint-plugin-react": "^7.20.0",

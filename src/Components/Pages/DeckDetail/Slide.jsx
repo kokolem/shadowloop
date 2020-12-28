@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Slide({
-  slideContent, deckName, onSlideFinished, isSlidePlaying, czechLabelShown, englishLabelShown,
+  slideContent, deckUrl, onSlideFinished, isSlidePlaying, czechLabelShown, englishLabelShown,
   pauseDurationMultiplier,
 }) {
   const classes = useStyles();
@@ -77,7 +77,7 @@ export default function Slide({
         <Card className={classes.card}>
           <img
             className={classes.media}
-            src={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${image}`}
+            src={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${image}`}
             alt={englishText}
           />
           <CardContent>
@@ -104,7 +104,7 @@ export default function Slide({
             )}
           </CardContent>
           <ReactPlayer
-            url={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${audio}`}
+            url={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${audio}`}
             playing={isAudioPlaying}
             width={0}
             height={0}
@@ -121,7 +121,7 @@ export default function Slide({
 
 Slide.propTypes = {
   czechLabelShown: PropTypes.bool.isRequired,
-  deckName: PropTypes.string.isRequired,
+  deckUrl: PropTypes.string.isRequired,
   englishLabelShown: PropTypes.bool.isRequired,
   isSlidePlaying: PropTypes.bool.isRequired,
   onSlideFinished: PropTypes.func.isRequired,

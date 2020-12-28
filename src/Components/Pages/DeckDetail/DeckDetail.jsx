@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 export default function DeckDetail() {
   const classes = useStyles();
 
-  const { deck: deckName } = useParams();
+  const { deck: deckUrl } = useParams();
 
   const [deckContent, setDeckContent] = useState([]);
   const [onSlide, setOnSlide] = useState(0);
@@ -33,28 +33,28 @@ export default function DeckDetail() {
   const [pauseDurationMultiplier, setPauseDurationMultiplier] = useState(1.5);
 
   useEffect(() => {
-    readRemoteFile(`${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${deckName}.csv`, {
+    readRemoteFile(`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${deckUrl}.csv`, {
       download: true,
       complete: (results) => {
         const newDeckContent = results.data.slice(0, -1);
         setDeckContent(newDeckContent);
 
         const firstImage = new Image();
-        firstImage.src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${newDeckContent[1][3]}`;
+        firstImage.src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${newDeckContent[1][3]}`;
         firstImage.onload = () => setIsLoading(false);
       },
     });
-  }, [deckName]);
+  }, [deckUrl]);
 
   useEffect(() => {
     if (!isLoading) {
       // preload next image and audio
       if (onSlide + 1 < deckContent.length) {
-        (new Image()).src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${deckContent[onSlide + 1][3]}`;
-        (new Audio()).src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckName}/${deckContent[onSlide + 1][2]}`;
+        (new Image()).src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${deckContent[onSlide + 1][3]}`;
+        (new Audio()).src = `${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${deckContent[onSlide + 1][2]}`;
       }
     }
-  }, [deckContent, deckName, isLoading, onSlide]);
+  }, [deckContent, deckUrl, isLoading, onSlide]);
 
   function nextSlide() {
     if (onSlide + 1 < deckContent.length) {
@@ -74,7 +74,7 @@ export default function DeckDetail() {
         {isLoading ? <LoadingSlide /> : (
           <Slide
             slideContent={deckContent[onSlide]}
-            deckName={deckName}
+            deckUrl={deckUrl}
             onSlideFinished={nextSlide}
             isSlidePlaying={isPlaying}
             czechLabelShown={czechLabelShown}

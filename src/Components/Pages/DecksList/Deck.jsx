@@ -15,18 +15,18 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Deck({ name }) {
+export default function Deck({ category, name, url }) {
   const classes = useStyles();
 
   return (
     <Card className={classes.root} variant="outlined">
-      <CardActionArea component={Link} to={`decks/${name}`}>
+      <CardActionArea component={Link} to={`decks/${url}`}>
         <CardContent>
           <Typography variant="overline" color="textSecondary">
-            {name.split('_')[0]}
+            {category}
           </Typography>
           <Typography variant="h5" component="h2">
-            {name.split('_')[1]}
+            {name}
           </Typography>
         </CardContent>
         <CardActions>
@@ -40,5 +40,7 @@ export default function Deck({ name }) {
 }
 
 Deck.propTypes = {
+  category: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };
