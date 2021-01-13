@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Container, Typography } from '@material-ui/core';
-import { useLocation } from 'react-router-dom';
+import {
+  ButtonBase, Container, Typography,
+} from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import qs from 'qs';
 import { useLocalStorage } from '@rehooks/local-storage';
+import { KeyboardArrowDown, KeyboardArrowRight } from '@material-ui/icons';
 import Deck from './Deck';
 import LoadingDeck from './LoadingDeck';
 
@@ -14,36 +17,43 @@ const useStyles = makeStyles((theme) => ({
   deckListPadding: {
     paddingBottom: theme.spacing(2),
   },
-  archivedDecksHeading: {
+  archiveTitle: {
+    width: '100%',
     paddingTop: theme.spacing(2),
+  },
+  archiveTitleButton: {
+    width: '100%',
+    padding: theme.spacing(1),
+  },
+  archiveTitleIcon: {
+    paddingLeft: theme.spacing(1),
+    marginTop: theme.spacing(1),
   },
 }));
 
 export default function DecksList() {
   const classes = useStyles();
 
-  const [allDecks, setAllDecks] = useState({});
-  const [activeDecks, setActiveDecks] = useState({});
-  const [archivedDecks, setArchivedDecks] = useLocalStorage('archivedDecks', {});
-  const [hiddenDecks, setHiddenDecks] = useLocalStorage('hiddenDecks', {});
+  const [allDecks, setAllDecks] = useState([]);
+  const [activeDecks, setActiveDecks] = useState([]);
+  const [archivedDecks, setArchivedDecks] = useLocalStorage('archivedDecks', []);
+  const [hiddenDecks, setHiddenDecks] = useLocalStorage('hiddenDecks', []);
 
-  const location = useLocation();
+  const [isArchiveCollapsed, setIsArchiveCollapsed] = useState(true);
+
+  const history = useHistory();
   useEffect(() => {
-    const hiddenDeckString = qs.parse(location.search, { ignoreQueryPrefix: true }).newDeck;
-    if (!hiddenDeckString) return;
+    const newHiddenDecksString = qs.parse(history.location.search, { ignoreQueryPrefix: true })
+      .newDeck;
+    if (!newHiddenDecksString) return;
 
-    const hiddenDeckSplit = hiddenDeckString.split('_');
-    if (hiddenDeckSplit.length !== 3) return;
-
-    const newHiddenDeck = {};
-    [newHiddenDeck.category, newHiddenDeck.name, newHiddenDeck.password] = hiddenDeckSplit;
-
-    const hiddenDeckUrl = hiddenDeckSplit.slice(0, 2).join('_');
-    setHiddenDecks({ ...hiddenDecks, [hiddenDeckUrl]: newHiddenDeck });
-  }, [hiddenDecks, location, setHiddenDecks]);
+    const newHiddenDecks = newHiddenDecksString.split(',');
+    setHiddenDecks([...new Set([...hiddenDecks, ...newHiddenDecks])]);
+    history.push(history.location.pathname);
+  }, [hiddenDecks, history, setHiddenDecks]);
 
   useEffect(() => {
-    setAllDecks((oldDecks) => ({ ...oldDecks, ...hiddenDecks }));
+    setAllDecks((oldDecks) => [...new Set([...oldDecks, ...hiddenDecks])]);
   }, [hiddenDecks]);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -51,35 +61,25 @@ export default function DecksList() {
     fetch(`${process.env.REACT_APP_DECKS_BASE_URL}/decks.txt`)
       .then((res) => res.text())
       .then((result) => {
-        const deckStrings = result.split('\n').slice(0, -1);
-
-        const fetchedDecks = deckStrings.map((deckString) => {
-          const newDeckValues = {};
-          [newDeckValues.category, newDeckValues.name] = deckString.split('_');
-          return [deckString, newDeckValues];
-        });
-
-        setAllDecks((oldDecks) => ({ ...oldDecks, ...Object.fromEntries(fetchedDecks) }));
+        const fetchedDecks = result.split('\n').slice(0, -1);
+        setAllDecks((oldDecks) => [...new Set([...oldDecks, ...fetchedDecks])]);
         setIsLoading(false);
       },
       (error) => { console.log(error); });
   }, []);
 
-  function archiveDeck(urlToArchive) {
-    setActiveDecks(Object.fromEntries(Object.entries(activeDecks)
-      .filter(([url]) => url !== urlToArchive)));
-    setArchivedDecks({ ...archivedDecks, ...{ [urlToArchive]: allDecks[urlToArchive] } });
+  function archiveDeck(deckToArchive) {
+    setActiveDecks(activeDecks.filter((deck) => deck !== deckToArchive));
+    setArchivedDecks([...new Set([...archivedDecks, deckToArchive])]);
   }
 
-  function unarchiveDeck(urlToUnarchive) {
-    setArchivedDecks(Object.fromEntries(Object.entries(archivedDecks)
-      .filter(([url]) => url !== urlToUnarchive)));
-    setActiveDecks({ ...activeDecks, ...{ [urlToUnarchive]: allDecks[urlToUnarchive] } });
+  function unarchiveDeck(deckToUnarchive) {
+    setArchivedDecks(archivedDecks.filter((deck) => deck !== deckToUnarchive));
+    setActiveDecks([...new Set([...activeDecks, deckToUnarchive])]);
   }
 
   useEffect(() => {
-    setActiveDecks(Object.fromEntries(Object.entries(allDecks)
-      .filter(([url]) => !(url in archivedDecks))));
+    setActiveDecks(allDecks.filter((deck) => !archivedDecks.includes(deck)));
   }, [allDecks, archivedDecks]);
 
   return (
@@ -94,34 +94,47 @@ export default function DecksList() {
         </>
       ) : (
         <>
-          {Object.entries(activeDecks).sort().map(([url, { category, name }]) => (
-            <div className={classes.deckPadding} key={url}>
+          {activeDecks.sort().map((deck) => (
+            <div className={classes.deckPadding} key={deck}>
               <Deck
-                category={category}
-                name={name}
-                url={url}
+                category={deck.split('_')[0]}
+                name={deck.split('_')[1]}
+                url={deck}
                 isArchived={false}
-                onArchive={() => archiveDeck(url)}
+                onArchive={() => archiveDeck(deck)}
               />
             </div>
           ))}
-          {Object.entries(archivedDecks).length !== 0 && (
-          <Typography
-            variant="h5"
-            component="h2"
-            className={classes.archivedDecksHeading}
-          >
-            Archivované balíčky
-          </Typography>
+          {archivedDecks.length !== 0 && (
+            <div className={classes.archiveTitle}>
+              <ButtonBase
+                className={classes.archiveTitleButton}
+                onClick={() => setIsArchiveCollapsed(!isArchiveCollapsed)}
+              >
+                <Typography
+                  variant="h5"
+                  component="h2"
+                >
+                  Archivované balíčky
+                </Typography>
+                <div className={classes.archiveTitleIcon}>
+                  {isArchiveCollapsed ? (
+                    <KeyboardArrowRight color="action" />
+                  ) : (
+                    <KeyboardArrowDown color="action" />
+                  )}
+                </div>
+              </ButtonBase>
+            </div>
           )}
-          {Object.entries(archivedDecks).sort().map(([url, { category, name }]) => (
-            <div className={classes.deckPadding} key={url}>
+          {!isArchiveCollapsed && archivedDecks.sort().map((deck) => (
+            <div className={classes.deckPadding} key={deck}>
               <Deck
-                category={category}
-                name={name}
-                url={url}
+                category={deck.split('_')[0]}
+                name={deck.split('_')[1]}
+                url={deck}
                 isArchived
-                onArchive={() => unarchiveDeck(url)}
+                onArchive={() => unarchiveDeck(deck)}
               />
             </div>
           ))}
