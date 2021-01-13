@@ -83,20 +83,20 @@ export default function DeckDetail() {
           />
         )}
       </Box>
-      { !isLoading && (
-      <Controls
-        isPlaying={isPlaying}
-        onResumePauseClick={() => setIsPlaying(!isPlaying)}
-        onSlide={onSlide}
-        maxSlide={deckContent.length}
-        onSlideChange={(_, slide) => setOnSlide(slide)}
-        czechLabelShown={czechLabelShown}
-        setCzechLabelShown={setCzechLabelShown}
-        englishLabelShown={englishLabelShown}
-        setEnglishLabelShown={setEnglishLabelShown}
-        pauseDurationMultiplier={pauseDurationMultiplier}
-        setPauseDurationMultiplier={setPauseDurationMultiplier}
-      />
+      {!isLoading && (
+        <Controls
+          isPlaying={isPlaying}
+          onResumePauseClick={() => setIsPlaying(!isPlaying)}
+          onSlide={onSlide}
+          maxSlide={deckContent.length}
+          onSlideChange={(_, slide) => setOnSlide(slide)}
+          czechLabelShown={czechLabelShown}
+          setCzechLabelShown={setCzechLabelShown}
+          englishLabelShown={englishLabelShown}
+          setEnglishLabelShown={setEnglishLabelShown}
+          pauseDurationMultiplier={pauseDurationMultiplier}
+          setPauseDurationMultiplier={setPauseDurationMultiplier}
+        />
       )}
     </Box>
   );

@@ -12,7 +12,7 @@ import DeckDetail from './Components/Pages/DeckDetail';
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Layout>
         <Switch>
           <Route exact path="/">
