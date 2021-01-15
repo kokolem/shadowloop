@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {
-  ButtonBase, Container, Typography,
+  ButtonBase, Collapse, Container, Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import qs from 'qs';
 import { useLocalStorage } from '@rehooks/local-storage';
-import { KeyboardArrowDown, KeyboardArrowRight } from '@material-ui/icons';
+import {
+  ExpandLess, ExpandMore,
+} from '@material-ui/icons';
 import Deck from './Deck';
 import LoadingDeck from './LoadingDeck';
 
@@ -119,25 +121,27 @@ export default function DecksList() {
                 </Typography>
                 <div className={classes.archiveTitleIcon}>
                   {isArchiveCollapsed ? (
-                    <KeyboardArrowRight color="action" />
+                    <ExpandMore />
                   ) : (
-                    <KeyboardArrowDown color="action" />
+                    <ExpandLess />
                   )}
                 </div>
               </ButtonBase>
             </div>
           )}
-          {!isArchiveCollapsed && archivedDecks.sort().map((deck) => (
-            <div className={classes.deckPadding} key={deck}>
-              <Deck
-                category={deck.split('_')[0]}
-                name={deck.split('_')[1]}
-                url={deck}
-                isArchived
-                onArchive={() => unarchiveDeck(deck)}
-              />
-            </div>
-          ))}
+          <Collapse in={!isArchiveCollapsed} timeout="auto">
+            {archivedDecks.sort().map((deck) => (
+              <div className={classes.deckPadding} key={deck}>
+                <Deck
+                  category={deck.split('_')[0]}
+                  name={deck.split('_')[1]}
+                  url={deck}
+                  isArchived
+                  onArchive={() => unarchiveDeck(deck)}
+                />
+              </div>
+            ))}
+          </Collapse>
         </>
       )}
     </Container>
