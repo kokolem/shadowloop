@@ -13,17 +13,18 @@ import Deck from './Deck';
 import LoadingDeck from './LoadingDeck';
 
 const useStyles = makeStyles((theme) => ({
-  deckPadding: {
+  decksList: {
     paddingTop: theme.spacing(2),
   },
-  deckListPadding: {
+  deckWrapper: {
     paddingBottom: theme.spacing(2),
   },
-  archiveTitle: {
+  archiveTitleWrapper: {
     width: '100%',
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
-  archiveTitleButton: {
+  archiveTitle: {
     width: '100%',
     padding: theme.spacing(1),
   },
@@ -85,11 +86,11 @@ export default function DecksList() {
   }, [allDecks, archivedDecks]);
 
   return (
-    <Container className={classes.deckListPadding}>
+    <Container className={classes.decksList}>
       {isLoading ? (
         <>
           {[...Array(4).keys()].map((key) => (
-            <div className={classes.deckPadding} key={key}>
+            <div className={classes.deckWrapper} key={key}>
               <LoadingDeck />
             </div>
           ))}
@@ -97,7 +98,7 @@ export default function DecksList() {
       ) : (
         <>
           {activeDecks.sort().map((deck) => (
-            <div className={classes.deckPadding} key={deck}>
+            <div className={classes.deckWrapper} key={deck}>
               <Deck
                 category={deck.split('_')[0]}
                 name={deck.split('_')[1]}
@@ -109,9 +110,9 @@ export default function DecksList() {
           ))}
           {archivedDecks.length !== 0 && (
             <>
-              <div className={classes.archiveTitle}>
+              <div className={classes.archiveTitleWrapper}>
                 <ButtonBase
-                  className={classes.archiveTitleButton}
+                  className={classes.archiveTitle}
                   onClick={() => setIsArchiveCollapsed(!isArchiveCollapsed)}
                 >
                   <Typography
@@ -132,7 +133,7 @@ export default function DecksList() {
 
               <Collapse in={!isArchiveCollapsed} timeout="auto">
                 {archivedDecks.sort().map((deck) => (
-                  <div className={classes.deckPadding} key={deck}>
+                  <div className={classes.deckWrapper} key={deck}>
                     <Deck
                       category={deck.split('_')[0]}
                       name={deck.split('_')[1]}
