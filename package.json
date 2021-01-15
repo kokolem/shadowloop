@@ -2,12 +2,13 @@
   "name": "shadowloop",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://kokolem.github.io/shadowloop",
+  "homepage": "https://shadowloop.lcenglish.cz",
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@rehooks/local-storage": "^2.4.0",
+    "core-js": "^3.8.2",
     "prop-types": "^15.7.2",
     "qs": "^6.9.5",
     "react": "^17.0.1",
@@ -46,7 +47,8 @@
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 safari version",
+      "IE 11"
     ]
   },
   "devDependencies": {
