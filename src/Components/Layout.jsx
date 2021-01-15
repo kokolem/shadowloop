@@ -6,15 +6,19 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Link } from 'react-router-dom';
+import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
 }));
 
+let theme = createMuiTheme();
+theme = responsiveFontSizes(theme);
+
 export default function Layout({ children }) {
   const classes = useStyles();
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <AppBar>
         <Toolbar>
@@ -27,7 +31,7 @@ export default function Layout({ children }) {
       </AppBar>
       <div className={classes.offset} />
       {children}
-    </>
+    </ThemeProvider>
   );
 }
 
