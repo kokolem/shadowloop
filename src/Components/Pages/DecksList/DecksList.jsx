@@ -108,40 +108,43 @@ export default function DecksList() {
             </div>
           ))}
           {archivedDecks.length !== 0 && (
-            <div className={classes.archiveTitle}>
-              <ButtonBase
-                className={classes.archiveTitleButton}
-                onClick={() => setIsArchiveCollapsed(!isArchiveCollapsed)}
-              >
-                <Typography
-                  variant="h5"
-                  component="h2"
+            <>
+              <div className={classes.archiveTitle}>
+                <ButtonBase
+                  className={classes.archiveTitleButton}
+                  onClick={() => setIsArchiveCollapsed(!isArchiveCollapsed)}
                 >
-                  Archivované balíčky
-                </Typography>
-                <div className={classes.archiveTitleIcon}>
-                  {isArchiveCollapsed ? (
-                    <ExpandMore />
-                  ) : (
-                    <ExpandLess />
-                  )}
-                </div>
-              </ButtonBase>
-            </div>
-          )}
-          <Collapse in={!isArchiveCollapsed} timeout="auto">
-            {archivedDecks.sort().map((deck) => (
-              <div className={classes.deckPadding} key={deck}>
-                <Deck
-                  category={deck.split('_')[0]}
-                  name={deck.split('_')[1]}
-                  url={deck}
-                  isArchived
-                  onArchive={() => unarchiveDeck(deck)}
-                />
+                  <Typography
+                    variant="h5"
+                    component="h2"
+                  >
+                    Archivované balíčky
+                  </Typography>
+                  <div className={classes.archiveTitleIcon}>
+                    {isArchiveCollapsed ? (
+                      <ExpandMore />
+                    ) : (
+                      <ExpandLess />
+                    )}
+                  </div>
+                </ButtonBase>
               </div>
-            ))}
-          </Collapse>
+
+              <Collapse in={!isArchiveCollapsed} timeout="auto">
+                {archivedDecks.sort().map((deck) => (
+                  <div className={classes.deckPadding} key={deck}>
+                    <Deck
+                      category={deck.split('_')[0]}
+                      name={deck.split('_')[1]}
+                      url={deck}
+                      isArchived
+                      onArchive={() => unarchiveDeck(deck)}
+                    />
+                  </div>
+                ))}
+              </Collapse>
+            </>
+          )}
         </>
       )}
     </Container>
