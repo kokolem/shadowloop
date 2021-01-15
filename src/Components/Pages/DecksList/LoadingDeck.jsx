@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -16,6 +16,12 @@ const useStyles = makeStyles({
 export default function LoadingDeck() {
   const classes = useStyles();
 
+  const randomLengthName = useState([...Array(
+    Math.floor(
+      Math.random() * 11,
+    ) + 10,
+  )].map(() => ('a')).join(''));
+
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
@@ -26,14 +32,19 @@ export default function LoadingDeck() {
         </Skeleton>
         <Skeleton>
           <Typography variant="h5" component="h2">
-            {[...Array(Math.floor(Math.random() * 11) + 10)].map(() => ('a')).join('')}
+            {randomLengthName}
           </Typography>
         </Skeleton>
       </CardContent>
       <CardActions>
         <Skeleton>
           <Button size="small" color="secondary">
-            Spustit od začátku
+            Spustit
+          </Button>
+        </Skeleton>
+        <Skeleton>
+          <Button size="small" color="secondary">
+            Archivovat
           </Button>
         </Skeleton>
       </CardActions>
