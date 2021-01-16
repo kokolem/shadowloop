@@ -4,14 +4,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Box } from '@material-ui/core';
 import ReactPlayer from 'react-player';
 import { ToggleButton } from '@material-ui/lab';
 import { Repeat as RepeatIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  wrapper: {
     padding: theme.spacing(2),
+    maxWidth: '100vw',
+    overflowWrap: 'anywhere',
+    hyphens: 'auto',
   },
   card: {
     width: 'fit-content',
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   loopButton: {
     float: 'right',
     paddingBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
   },
 }));
 
@@ -72,50 +75,48 @@ export default function Slide({
   }
 
   return (
-    <Box display="flex" className={classes.root}>
-      <Box m="auto">
-        <Card className={classes.card}>
-          <img
-            className={classes.media}
-            src={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${image}`}
-            alt={englishText}
-          />
-          <CardContent>
-            <div className={classes.loopButton}>
-              <ToggleButton
-                value="repeat"
-                selected={isSlideRepeating}
-                onChange={() => setIsSlideRepeating(!isSlideRepeating)}
-              >
-                <RepeatIcon />
-              </ToggleButton>
-            </div>
-            { (englishLabelShown || czechLabelShown) && (
+    <div className={classes.wrapper}>
+      <Card className={classes.card}>
+        <img
+          className={classes.media}
+          src={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${image}`}
+          alt={englishText}
+        />
+        <CardContent>
+          <div className={classes.loopButton}>
+            <ToggleButton
+              value="repeat"
+              selected={isSlideRepeating}
+              onChange={() => setIsSlideRepeating(!isSlideRepeating)}
+            >
+              <RepeatIcon />
+            </ToggleButton>
+          </div>
+          { (englishLabelShown || czechLabelShown) && (
             <>
               <Typography gutterBottom variant="h5" component="h2">
                 {englishLabelShown ? englishText : czechText}
               </Typography>
               { (englishLabelShown && czechLabelShown) && (
-              <Typography variant="body2" color="textSecondary" component="p">
-                {czechText}
-              </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {czechText}
+                </Typography>
               )}
             </>
-            )}
-          </CardContent>
-          <ReactPlayer
-            url={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${audio}`}
-            playing={isAudioPlaying}
-            width={0}
-            height={0}
-            onEnded={onAudioFinished}
-            onDuration={(t) => {
-              pauseDuration.current = t;
-            }}
-          />
-        </Card>
-      </Box>
-    </Box>
+          )}
+        </CardContent>
+        <ReactPlayer
+          url={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${audio}`}
+          playing={isAudioPlaying}
+          width={0}
+          height={0}
+          onEnded={onAudioFinished}
+          onDuration={(t) => {
+            pauseDuration.current = t;
+          }}
+        />
+      </Card>
+    </div>
   );
 }
 
