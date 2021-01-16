@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ReactPlayer from 'react-player';
 import { ToggleButton } from '@material-ui/lab';
 import { Repeat as RepeatIcon } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -17,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     width: 'fit-content',
+  },
+  mediaWrapper: {
+    width: '100%',
   },
   media: {
     maxWidth: '100%',
@@ -77,11 +81,13 @@ export default function Slide({
   return (
     <div className={classes.wrapper}>
       <Card className={classes.card}>
-        <img
-          className={classes.media}
-          src={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${image}`}
-          alt={englishText}
-        />
+        <Box className={classes.mediaWrapper} display="flex" justifyContent="center">
+          <img
+            className={classes.media}
+            src={`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${image}`}
+            alt={englishText}
+          />
+        </Box>
         <CardContent>
           <div className={classes.loopButton}>
             <ToggleButton

@@ -71,17 +71,21 @@ export default function DeckDetail() {
       flexDirection="column"
     >
       <Box flex="1">
-        {isLoading ? <LoadingSlide /> : (
-          <Slide
-            slideContent={deckContent[onSlide]}
-            deckUrl={deckUrl}
-            onSlideFinished={nextSlide}
-            isSlidePlaying={isPlaying}
-            czechLabelShown={czechLabelShown}
-            englishLabelShown={englishLabelShown}
-            pauseDurationMultiplier={pauseDurationMultiplier}
-          />
-        )}
+        <Box display="flex">
+          <Box m="auto">
+            {isLoading ? <LoadingSlide /> : (
+              <Slide
+                slideContent={deckContent[onSlide]}
+                deckUrl={deckUrl}
+                onSlideFinished={nextSlide}
+                isSlidePlaying={isPlaying}
+                czechLabelShown={czechLabelShown}
+                englishLabelShown={englishLabelShown}
+                pauseDurationMultiplier={pauseDurationMultiplier}
+              />
+            )}
+          </Box>
+        </Box>
       </Box>
       {!isLoading && (
         <Controls
