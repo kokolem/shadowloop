@@ -87,35 +87,19 @@ export default function DeckDetail() {
           </Box>
         </Box>
       </Box>
-      {isLoading ? (
-        <Controls
-          isPlaying={isPlaying}
-          onResumePauseClick={() => setIsPlaying(!isPlaying)}
-          onSlide={1}
-          maxSlide={1}
-          onSlideChange={() => {}}
-          czechLabelShown={czechLabelShown}
-          setCzechLabelShown={setCzechLabelShown}
-          englishLabelShown={englishLabelShown}
-          setEnglishLabelShown={setEnglishLabelShown}
-          pauseDurationMultiplier={pauseDurationMultiplier}
-          setPauseDurationMultiplier={setPauseDurationMultiplier}
-        />
-      ) : (
-        <Controls
-          isPlaying={isPlaying}
-          onResumePauseClick={() => setIsPlaying(!isPlaying)}
-          onSlide={onSlide}
-          maxSlide={deckContent.length}
-          onSlideChange={(_, slide) => setOnSlide(slide)}
-          czechLabelShown={czechLabelShown}
-          setCzechLabelShown={setCzechLabelShown}
-          englishLabelShown={englishLabelShown}
-          setEnglishLabelShown={setEnglishLabelShown}
-          pauseDurationMultiplier={pauseDurationMultiplier}
-          setPauseDurationMultiplier={setPauseDurationMultiplier}
-        />
-      )}
+      <Controls
+        isPlaying={isPlaying}
+        onResumePauseClick={() => setIsPlaying(!isPlaying)}
+        onSlide={isLoading ? 1 : onSlide}
+        maxSlide={isLoading ? 1 : deckContent.length}
+        onSlideChange={(_, slide) => setOnSlide(slide)}
+        czechLabelShown={czechLabelShown}
+        setCzechLabelShown={setCzechLabelShown}
+        englishLabelShown={englishLabelShown}
+        setEnglishLabelShown={setEnglishLabelShown}
+        pauseDurationMultiplier={pauseDurationMultiplier}
+        setPauseDurationMultiplier={setPauseDurationMultiplier}
+      />
     </Box>
   );
 }
