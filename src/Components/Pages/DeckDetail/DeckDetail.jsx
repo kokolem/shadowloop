@@ -87,7 +87,21 @@ export default function DeckDetail() {
           </Box>
         </Box>
       </Box>
-      {!isLoading && (
+      {isLoading ? (
+        <Controls
+          isPlaying={isPlaying}
+          onResumePauseClick={() => setIsPlaying(!isPlaying)}
+          onSlide={1}
+          maxSlide={1}
+          onSlideChange={() => {}}
+          czechLabelShown={czechLabelShown}
+          setCzechLabelShown={setCzechLabelShown}
+          englishLabelShown={englishLabelShown}
+          setEnglishLabelShown={setEnglishLabelShown}
+          pauseDurationMultiplier={pauseDurationMultiplier}
+          setPauseDurationMultiplier={setPauseDurationMultiplier}
+        />
+      ) : (
         <Controls
           isPlaying={isPlaying}
           onResumePauseClick={() => setIsPlaying(!isPlaying)}
