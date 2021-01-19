@@ -19,6 +19,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+function shuffleArray(array) {
+  // eslint-disable-next-line no-plusplus
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    // eslint-disable-next-line no-param-reassign
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 export default function DeckDetail() {
   const classes = useStyles();
 
@@ -35,8 +44,20 @@ export default function DeckDetail() {
   useEffect(() => {
     readRemoteFile(`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/${deckUrl}.csv`, {
       download: true,
-      complete: (results) => {
+      complete: async (results) => {
         const newDeckContent = results.data.slice(0, -1);
+        const deckProps = await fetch(`${process.env.REACT_APP_DECKS_BASE_URL}/${deckUrl}/props.json`)
+          .then((r) => r.json())
+          .catch(() => false);
+
+        let deckShuffle = true;
+        if (deckProps) {
+          if ('shuffle' in deckProps) {
+            deckShuffle = deckProps.shuffle;
+          }
+        }
+        if (deckShuffle) shuffleArray(newDeckContent);
+
         setDeckContent(newDeckContent);
 
         const firstImage = new Image();
