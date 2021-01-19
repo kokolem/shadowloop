@@ -32,7 +32,7 @@ export default function LoadingDeck() {
         </Skeleton>
         <Skeleton>
           <Typography variant="h5" component="h2">
-            {randomLengthName}
+            {randomLengthName[0]}
           </Typography>
         </Skeleton>
       </CardContent>
