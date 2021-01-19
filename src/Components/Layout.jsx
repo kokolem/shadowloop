@@ -6,10 +6,16 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Link } from 'react-router-dom';
-import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core';
+import {
+  createMuiTheme, IconButton, responsiveFontSizes, ThemeProvider,
+} from '@material-ui/core';
+import { Feedback } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
+  feedback: {
+    marginLeft: 'auto',
+  },
 }));
 
 let theme = createMuiTheme();
@@ -27,6 +33,15 @@ export default function Layout({ children }) {
               Shadow loop
             </Typography>
           </Link>
+          <a
+            href={process.env.REACT_APP_FEEDBACK_URL}
+            style={{ textDecoration: 'none', color: 'unset' }}
+            className={classes.feedback}
+          >
+            <IconButton color="inherit">
+              <Feedback />
+            </IconButton>
+          </a>
         </Toolbar>
       </AppBar>
       <div className={classes.offset} />
