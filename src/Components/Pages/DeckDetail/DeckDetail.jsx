@@ -77,6 +77,31 @@ export default function DeckDetail() {
     }
   }, [deckContent, deckUrl, isLoading, onSlide]);
 
+  useEffect(() => {
+    let wakelock = null;
+    async function getWakelock() {
+      try {
+        return await navigator.wakeLock.request('screen');
+      } catch (err) {
+        // can't get wakelock for some reason, too bad!
+        console.log(`${err.name}, ${err.message}`);
+        return null;
+      }
+    }
+    getWakelock().then((returnedWakelock) => {
+      if (returnedWakelock) {
+        console.log('wakelock acquired');
+        wakelock = returnedWakelock;
+      } else console.log('could not acquire wakelock');
+    });
+    return function cleanup() {
+      if (wakelock) {
+        console.log('releasing wakelock');
+        wakelock.release();
+      }
+    };
+  }, []);
+
   function nextSlide() {
     if (onSlide + 1 < deckContent.length) {
       setOnSlide(onSlide + 1);
